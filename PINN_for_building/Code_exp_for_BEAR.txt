@@ -1,0 +1,1 @@
+This code works with BEAR dataset presented in paper 'BEAR-Data: Analysis and Applications of an Open Multizone Building Dataset'.
