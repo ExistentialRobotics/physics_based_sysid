@@ -1,0 +1,285 @@
+% Before running this script, the qpOASES Matlab interface must be
+% compiled. To do this, run ./Resources/qpOASES-3.1.0/interfaces/matlab/make.m
+clc
+clear all
+close all
+
+addpath('./Resources')
+addpath('./Resources/qpOASES-3.1.0/interfaces/matlab') 
+
+
+n = 2; % Number of states
+m = 1; % Number of control inputs
+
+
+f_c = @(t,x,u)([x(2,:); -2*x(2,:)-x(1,:).*cos(x(1,:)+x(2,:))+u]); % Dynamics
+
+% Discretize
+deltaT = 0.01;
+%Runge-Kutta 4
+k1 = @(t,x,u) (  f_c(t,x,u) );
+k2 = @(t,x,u) ( f_c(t,x + k1(t,x,u)*deltaT/2,u) );
+k3 = @(t,x,u) ( f_c(t,x + k2(t,x,u)*deltaT/2,u) );
+k4 = @(t,x,u) ( f_c(t,x + k1(t,x,u)*deltaT,u) );
+f_d = @(t,x,u) ( x + (deltaT/6) * ( k1(t,x,u) + 2*k2(t,x,u) + 2*k3(t,x,u) + k4(t,x,u)  )   );
+
+
+%% Collect data
+rng(123)
+disp('Starting data collection')
+
+       
+Nsim    = 2;
+Ntraj   = 20000;       % number of trajectories
+
+Cy = [0 1]; % Output matrix: y = Cy*x
+nD = 1; % Number of delays
+ny = size(Cy,1); % Number of outputs
+
+
+% Random control input forcing
+% pre‑draw all control sequences
+Ubig = -1 + 2*rand(Nsim, Ntraj);
+
+% preallocate storage
+numSamples = Ntraj * Nsim;
+X       = zeros(n, numSamples);
+Xnext   = zeros(n, numSamples);
+Udata   = zeros(m, numSamples);
+
+
+% n_zeta = (nD+1)*ny + nD*m; 
+n_state = n;
+
+idx = 1;
+for j = 1:Ntraj
+    % random initial state in [-1,1]^n
+    x = -1 + 2*rand(n,1);
+    
+    % here one step ahead only and store current in X and next in Xnext
+    for k = 1:Nsim
+        u      = Ubig(k,j);
+        x_next = f_d(0, x, u);    % one RK4 step using your f_ud
+
+        % store
+        X(:,idx) = x;          % current state x_k
+        Xnext(:,idx) = x_next;     % next    state x_{k+1}
+        Udata(:,idx) = u;          % input   u_k
+
+        idx = idx + 1;
+        x = x_next;              % advance for next step
+    end
+end
+Y = Cy*X;
+
+
+
+%% Basis functions
+basisFunction = 'rbf';
+Nrbf = 10; % size of the Koopman model
+% cent = rand(n_zeta,Nrbf)*2 - 1; % RBF centers
+cent = rand(n_state,Nrbf)*2 - 1; % RBF centers
+rbf_type = 'thinplate';
+theta_max = pi;
+liftFun = @(xx)( [xx;rbf(xx,cent,rbf_type)] );
+% Nlift = Nrbf + n_zeta;
+
+
+
+%% Lift
+disp('Starting LIFTING')
+
+Xlift = liftFun(X);
+Xnextlift = liftFun(Xnext);
+U = Udata;
+
+
+Nlift = size(Xlift,1);   % lifted‐state dimension
+m     = size(U,1);       % number of inputs
+p     = size(Y,1);       % dimension of the (delay‐embedded) output
+
+
+
+
+%% Soft‐Constrained Koopman
+% Learn the model with soft constraints
+lambda = 2e2;
+
+% Decision variables
+A1 = sdpvar(Nlift,Nlift,'full');
+B1 = sdpvar(Nlift,m,     'full');
+C1 = sdpvar(p,      Nlift,'full');
+D1 = sdpvar(p,      m,     'full');
+gamma = sdpvar(1,1);
+t = sdpvar(1,1);
+
+% LMI and SLACK as before
+LMI   = [ gamma*eye(Nlift), A1; A1', gamma*eye(Nlift) ]>=0;
+SLACK = [ t >= gamma; t >= 0 ];
+
+% Correct residual & objective:
+Res1   = [Xnextlift; Y ] - [ A1*Xlift + B1*U ; C1*Xlift + D1*U ];
+recon1 = norm(Res1,'fro')^2;
+obj1   = recon1 + lambda*t^2;
+
+
+opts = sdpsettings( ...
+    'solver','mosek', ...
+    'verbose',1 );
+
+p1 = optimize([LMI, SLACK], obj1, opts);
+
+% Extract values
+Aopt = value(A1);
+Bopt = value(B1);
+Copt = value(C1);
+Dopt = value(D1);
+gamma_opt = value(gamma);
+t_opt  = value(t);
+
+
+%%
+% Learn the model without soft constraints
+% Decision variables
+A2 = sdpvar(Nlift,Nlift,'full');
+B2 = sdpvar(Nlift,m,     'full');
+C2 = sdpvar(p,      Nlift,'full');
+D2 = sdpvar(p,      m,     'full');
+
+
+% Correct residual & objective:
+Res2   = [Xnextlift; Y] - [ A2*Xlift + B2*U ; C2*Xlift + D2*U ];
+recon2 = norm(Res2,'fro')^2;
+obj2   = recon2;
+
+
+opts = sdpsettings('solver','mosek', 'verbose',1 );
+
+p2 = optimize([], obj2, opts);
+
+% 8) Extract values
+A_nosoft = value(A2);
+B_nosoft = value(B2);
+C_nosoft = value(C2);
+D_nosoft = value(D2);
+
+
+disp('The spectrum of A from Koopman with soft constraint: \n')
+max(abs(eig(Aopt)))
+disp('The spectrum of A from Koopman with softout constraint: \n')
+max(abs(eig(A_nosoft)))
+
+
+%%
+% Test
+Tmax   = 10;             % seconds
+deltaT = 0.01;          
+Nsim   = floor(Tmax/deltaT);
+x0     = [-0.6; 1.4];   % some test initial condition
+x0lift = liftFun(x0);
+% example control
+u_test = 0.8*sin((0:Nsim-1)*0.2);
+
+
+% Simulate the Koopman model with soft constraints
+% preallocate
+z_pred = zeros(Nlift, Nsim+1);
+y_pred = zeros(p, Nsim+1);
+
+% initialize
+z_pred(:,1) = x0lift;
+y_pred(:,1) = Cy*x0;
+
+
+for k = 1:Nsim
+    u_k = u_test(k);
+    % linear Koopman predictor
+    z_pred(:,k+1) = Aopt*z_pred(:,k) + Bopt*u_k;
+    y_pred(:,k+1) = Copt*z_pred(:,k) + Dopt*u_k;
+end
+
+
+% Simulate the Koopman model without soft constraints
+% preallocate
+z_pred_nosoft = zeros(Nlift, Nsim+1);
+y_pred_nosoft = zeros(p, Nsim+1);
+
+% initialize
+z_pred_nosoft(:,1) = x0lift;
+y_pred_nosoft(:,1) = Cy*x0;
+
+
+for k = 1:Nsim
+    u_k = u_test(k);
+    % linear Koopman predictor
+    z_pred_nosoft(:,k+1) = A_nosoft*z_pred_nosoft(:,k) + B_nosoft*u_k;
+    y_pred_nosoft(:,k+1) = C_nosoft*z_pred_nosoft(:,k) + D_nosoft*u_k;
+end
+
+
+
+% Simulate true nonlinear system for comparison
+x_true = zeros(n,Nsim+1);
+x_true(:,1) = x0;
+for k=1:Nsim
+    x_true(:,k+1) = f_d(0, x_true(:,k), u_test(k));
+end
+y_true = Cy*x_true;
+
+
+t = (0:Nsim)*deltaT;
+figure('Units','normalized','Position',[0.10 0.10 0.50 0.80]);
+
+subplot(3,1,1);
+hold on 
+plot(t, x_true(1,:), 'r-',  'LineWidth',1.5);
+plot(t, z_pred(1,:), '--', 'Color','#006CD1', 'LineWidth',1.5);
+plot(t, z_pred_nosoft(1,:), '-', 'Color', '#994F00', 'LineWidth',1.5);
+h1 = legend('true x_1','Koopman with soft constraint x_1', 'Koopman without soft constraint x_1'); xlabel('t [s]'); ylabel('x_1');
+set(h1, 'location', 'best')
+
+subplot(3,1,2);
+hold on 
+plot(t, x_true(2,:), 'r-',  'LineWidth',1.5);
+plot(t, z_pred(2,:), '--', 'Color','#006CD1', 'LineWidth',1.5);
+plot(t, z_pred_nosoft(2,:), '-', 'Color', '#994F00', 'LineWidth',1.5);
+h2 = legend('true x_2','Koopman with soft constraint x_2', 'Koopman without soft constraint x_2'); xlabel('t [s]'); ylabel('x_2');
+set(h2, 'location', 'best')
+
+subplot(3,1,3);
+hold on 
+plot(t, y_true(1,:), 'r-',  'LineWidth',1.5);
+plot(t, y_pred(1,:), '--', 'Color','#006CD1', 'LineWidth',1.5);
+plot(t, y_pred_nosoft(1,:), '-', 'Color','#994F00', 'LineWidth',1.5);
+h3 = legend('true y','Koopman with soft constraint y', 'Koopman without soft constraint y'); xlabel('t [s]'); ylabel('y');
+set(h3, 'location', 'best')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
