@@ -12,5 +12,7 @@ add YALMIP to your MATLAB path. <pre> ```addpath(genpath('path_to_YALMIP_folder'
 
 
 ## Demo with Three Second Order Subsystems
-Run ```distributed_controller.m``` to design distributed linear controllers for three subsystems that ensure suitable dissipativity conditions.
+Run ```distributed_controller.m``` to design distributed linear controllers for three subsystems that satisify suitable dissipativity conditions.
 We simulate and plot the closed-loop dynamics with noise and coupling to demonstrate the performance for the controllers. 
+
+<img src="distributed_controller.png">
