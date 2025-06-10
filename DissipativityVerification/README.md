@@ -16,7 +16,7 @@ Make sure ``` YAlMIP ``` and solvers are installed and added to the MATLAB path.
 
 ## Demo with Mass-Spring-Damper
 
-Run ```Dissipativity_verification.m``` to implement data-driven verification by LMIs. It also plots out the inference on the $\ell_2$-gain (Fig.14) and input-feedforward passivity parameter (Fig. 15) respectively. ```simulate_system.m``` is the function used in Dissipativity_verification.m to draw simulation data.
+Run ```Dissipativity_verification.m``` to implement data-driven verification by LMIs. It also plots out the inference on the $\ell_2$-gain (Fig. 14) and input-feedforward passivity parameter (Fig. 15) respectively. ```simulate_system.m``` is the function used in Dissipativity_verification.m to draw simulation data.
 
 <table align="center">
   <tr>
@@ -29,8 +29,8 @@ Run ```Dissipativity_verification.m``` to implement data-driven verification by 
   </tr>
 </table>
 
-Run ```Visualization_set_membership.m``` to generate visualization for set memberships.
-<h4 align="center">Projected set membership</h4>
+Run ```Visualization_set_membership.m``` to generate visualization for set memberships (Fig. 13).
+<h4 align="center">Projected Set Membership</h4>
 <div align="center">
   <img src="l2gain_inference.png" width="400pt"><img src="l2gain_inference.png" width="400pt">
 </div>
