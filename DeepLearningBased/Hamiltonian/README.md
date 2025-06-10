@@ -1,5 +1,4 @@
-# Hamiltonian-based Neural ODE Networks on the SE(3) Manifold For Dynamics Learning and Control
-This repo provides code for the paper "Hamiltonian-based Neural ODE Networks on the SE(3) Manifold For Dynamics Learning and Control" (https://thaipduong.github.io/SE3HamDL/).
+# This repo provides code for Example 3.1, based on the original code from https://thaipduong.github.io/SE3HamDL/.
 
 ## Dependencies
 Our code is tested with Ubuntu 18.04 and Python 3.7, Python 3.8. It depends on the following Python packages: 
