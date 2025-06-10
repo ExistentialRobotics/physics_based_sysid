@@ -32,7 +32,7 @@ Run ```Dissipativity_verification.m``` to implement data-driven verification by 
 Run ```Visualization_set_membership.m``` to generate visualization for set memberships (Fig. 13).
 <h4 align="center">Projected Set Membership</h4>
 <div align="center">
-  <img src="l2gain_inference.png" width="400pt"><img src="l2gain_inference.png" width="400pt">
+  <img src="SetMem_MSDSys_data_length.png" width="400pt"><img src="SetMem_MSDSys_noise.png" width="400pt">
 </div>
 
 
