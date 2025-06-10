@@ -18,9 +18,10 @@ We first use function *ssest* from the *System Identification Toolbox* in Matlab
 Then we perturb the output matrix C as least as possible to enforce hard constraints on passitivity. The final linear model is certified to be passive.
 Note that the data used for identication is noisy. We compare the performance of the baseline system model and the perturbed system model with the nominal system.
 <div align="center">
-<img src="figs/noisy_data_nominal.png" width='400pt'><img src="figs/final_passive.png" width='400pt'>
-<div>
- 
-The fit is also checked using *lsim* and it reports 95.23% for the fit goodness score on the final passive model. 
+  <img src="figs/noisy_data_nominal.png" width="400pt">
+  <img src="figs/final_passive.png" width="400pt">
+</div>
+
+The fit is also checked using *lsim* and it reports 95.23% for the fit goodness score on the final passive model.
 
 
