@@ -1,7 +1,7 @@
 %% Data and Initializaion
 clear 
 clc
-load Results/Survey_MSD/weights_4164_3000_actv01_nolast.mat
+load Results/weights_4164_3000_actv01_nolast.mat
 alpha = 0.1; % a in LeakyReLU function
 beta = 1;
 p = alpha*beta;
