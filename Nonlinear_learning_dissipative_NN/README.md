@@ -24,7 +24,8 @@ Then run ```M1MLmethod``` to perturb the weights so that the model is certified 
 Lastly, we retrain the biases using ```bias_retraining.py``` to retain the fitting ability while maintaining dissipativity. The retrained biases are stored in 
 ```./Results/retrained_biases_4164_4000_actv01_nolast.mat```. With trained model, run ```afteradjust.m``` to plot out the performance of he ground truth, the fit for baseline model, model
 after weights perturbation and final model respectively.
-<img src="Results/figs/MSD_results_all.png">
+
+<img src="Results/figs/MSD_results_all.png" width = 700pt>
 
 
 
