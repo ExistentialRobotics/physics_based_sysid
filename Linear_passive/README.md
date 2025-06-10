@@ -8,9 +8,12 @@ You will need the following toolboxes and packages:
 ```System Identification Toolbox```
 
 ``` YAlMIP ```: Download at https://yalmip.github.io/download/ and 
-add it to your MATLAB path. <pre> ```addpath(genpath('path_to_YALMIP_folder')) ``` </pre>
+add it to your MATLAB path. 
 
-```SeDuMi```: Download at [SeDuMi download page](https://github.com/sqlp/sedumi) and add it to your MATLAB path.  <pre> ```addpath(genpath('path_to_SeDuMi_folder')) ``` </pre>
+```SeDuMi```: Download at [SeDuMi download page](https://github.com/sqlp/sedumi) and add it to your MATLAB path.
+
+Make sure ``` YAlMIP ``` and ```SeDuMi``` are installed and added to the MATLAB path.
+
 
 ## Demo with RLC Circuit
 Run ```example_linear.m``` to identify a linear model for a RLC circuit, where resistor, inductor and capacitor are in series,  with passivity. 
