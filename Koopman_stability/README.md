@@ -3,7 +3,7 @@ This repo provides code for Example 4.2.
 ## Dependencies
 This code is developed and tested in MATLAB. You will need the following.
 
-``` YAlMIP ```: Download at [https://yalmip.github.io/](https://yalmip.github.io/download/) and 
+``` YAlMIP ```: Download at https://yalmip.github.io/download/ and 
 add YALMIP to your MATLAB path. <pre> ```addpath(genpath('path_to_YALMIP_folder')) ``` </pre>
 ```MOSEK```: Download at https://www.mosek.com/. License can be requested at https://www.mosek.com/products/academic-licenses/.
 
