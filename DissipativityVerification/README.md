@@ -1,4 +1,4 @@
-# Data Driven Dissipativity Verification for a Mass-Spring-Damper system
+# Data Driven Dissipativity Verification for a Mass-Spring-Damper System
 This repo provides code for Example 6.4.
 
 ## Dependencies
