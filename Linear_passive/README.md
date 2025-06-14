@@ -7,10 +7,9 @@ You will need the following toolboxes and packages:
 
 ```System Identification Toolbox```
 
-``` YAlMIP ```: Download at https://yalmip.github.io/download/ and 
-add it to your MATLAB path. 
+``` YAlMIP ```: Download at https://yalmip.github.io/download/.
 
-```SeDuMi```: Download at [SeDuMi download page](https://github.com/sqlp/sedumi) and add it to your MATLAB path.
+```SeDuMi```: Download at [SeDuMi download page](https://github.com/sqlp/sedumi).
 
 Make sure ``` YAlMIP ``` and ```SeDuMi``` are installed and added to the MATLAB path.
 

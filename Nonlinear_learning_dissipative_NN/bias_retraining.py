@@ -97,8 +97,8 @@ for i in range(args.traj_num):
 
     ax_traj.plot(t.cpu().numpy(), true_y.cpu().numpy()[:, 0, 0], 'b-', t.cpu().numpy(), true_y.cpu().numpy()[:, 0, 1], 'g-')
 
-    makedirs("Results/Survey_MSD/figs")
-    plt.savefig("Results/Survey_MSD/figs/true_traj_time_"+str(i+1)+".png")
+    makedirs("Results/figs")
+    plt.savefig("Results/figs/true_traj_time_"+str(i+1)+".png")
 
 
 
@@ -141,10 +141,10 @@ def visualize(true_y, pred_y, odefunc, itr):
         ax_traj.plot(true_y.cpu().numpy()[:, 0, 0], true_y.cpu().numpy()[:, 0, 1], 'g-')
         ax_traj.plot(pred_y.cpu().detach().numpy()[:, 0, 0], pred_y.detach().cpu().numpy()[:, 0, 1], 'b--')
 
-        makedirs("Results/Survey_MSD/figs")
+        makedirs("Results/figs")
 
         ## For biases retraining
-        plt.savefig('Results/Survey_MSD/figs/biases_retrainig_itr'+str(itr)+'_4164_'+'actv01_nolast'+'.png')
+        plt.savefig('Results/figs/biases_retrainig_itr'+str(itr)+'_4164_'+'actv01_nolast'+'.png')
 
 
 
@@ -178,7 +178,7 @@ class ODEFunc(nn.Module):
 
 # get weights
 import scipy.io
-data = scipy.io.loadmat('Results/Survey_MSD/weights_adjusted.mat')
+data = scipy.io.loadmat('Results/weights_adjusted.mat')
 
 
 weights = {}
@@ -277,7 +277,7 @@ if __name__ == '__main__':
 
         
             # For saving retrained bias
-            savemat('Results/Survey_MSD/retrained_biases_4164_'+str(itr)+'_actv01_nolast'+'.mat', biases)
+            savemat('Results/retrained_biases_4164_'+str(itr)+'_actv01_nolast'+'.mat', biases)
                 
                
     

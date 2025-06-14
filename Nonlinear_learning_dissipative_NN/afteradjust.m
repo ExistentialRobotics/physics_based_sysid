@@ -1,11 +1,11 @@
 clear 
 clc
-load Results/Survey_MSD/weights_adjusted.mat
+load Results/weights_adjusted.mat
 % can also test the model before weights adjustment 
-load Results/Survey_MSD/weights_4164_3000_actv01_nolast.mat 
+load Results/weights_4164_3000_actv01_nolast.mat 
 % b1,b2 for baseline; b1_retrained b2_trained for the final model 
-load Results/Survey_MSD/biases_4164_3000_actv01_nolast.mat 
-load Results/Survey_MSD/retrained_biases_4164_4000_actv01_nolast.mat
+load Results/biases_4164_3000_actv01_nolast.mat 
+load Results/retrained_biases_4164_4000_actv01_nolast.mat
 
 % b1 = zeros(16,1);
 % b2 = [0;0;0;0];
