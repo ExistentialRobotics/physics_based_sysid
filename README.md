@@ -11,7 +11,7 @@ This repository contains an implementation accompanying the paper Physics-Inform
 - S. Sivaranjani, Y. Shi, N. Atanasov, T. Duong, J. Feng, T. Martin, Y. Xu, F. Allgöwer, V. Gupta, [**Physics-Informed System Identification for Control**](https://arxiv.org/abs/xxx), Annual Reviews in Control, 2025, [arXiv:xxx](https://arxiv.org/abs/xxx).
 
 ```bibtex
-@Article{sivaranjani2025llm-planning,
+@article{sivaranjani2025physysid,
     title = {Physics-Informed System Identification for Control},
     author = {S. Sivaranjani and Yuanyuan Shi and Nikolay Atanasov and Thai Duong and Jie Feng and Tim Martin and Yuezhu Xu and Frank Allgöwer and Vijay. Gupta},
     journal = {Annual Reviews in Control},
