@@ -48,3 +48,5 @@ To train the model and generate the visualization, run the `train_and_visualizat
 
 ```bash
 python train_and_visualization.py
+```
+![Temerature predictions for 15-minute (top) and 3-hour (bottom) horizons, using one week data for training and the rest for testing.](predict.png)
