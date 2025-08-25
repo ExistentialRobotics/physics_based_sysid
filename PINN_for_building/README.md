@@ -1,6 +1,6 @@
 # Code for Example 5.4
 
-This repository contains the source code and implementation for Example 5.4, demonstrating a model trained on the BEAR dataset.
+This repository contains the source code and implementation for Example 5.4, demonstrating the performance of PINN, combined PINN and NN, and standard NN.
 
 ***
 
