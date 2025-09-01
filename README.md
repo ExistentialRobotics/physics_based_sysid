@@ -13,7 +13,7 @@ This repository contains an implementation accompanying the paper Physics-Inform
 ```bibtex
 @article{sivaranjani2025physysid,
     title = {Physics-Informed System Identification for Control},
-    author = {S. Sivaranjani and Yuanyuan Shi and Nikolay Atanasov and Thai Duong and Jie Feng and Tim Martin and Yuezhu Xu and Frank Allgöwer and Vijay. Gupta},
+    author = {S. Sivaranjani and Yuanyuan Shi and Nikolay Atanasov and Thai Duong and Jie Feng and Tim Martin and Yuezhu Xu and Frank Allgöwer and Vijay Gupta},
     journal = {Annual Reviews in Control},
     year = {2025},
     volume = {},
