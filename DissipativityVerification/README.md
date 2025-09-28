@@ -17,12 +17,12 @@ Run ```Dissipativity_verification.m``` to implement a data-driven verification b
 
 <table align="center">
   <tr>
-    <td align="center"><b>Inferred Input-Forward Passivity Parameter</b></td>
     <td align="center"><b>Inferred <b>&#8467;<sub>2</sub>-gain</b></td>
+    <td align="center"><b>Inferred Input-Forward Passivity Parameter</b></td>
   </tr>
   <tr>
-    <td align="center"><img src="l2gain_inference.png" width="400pt"></td>
-    <td align="center"><img src="inputforward_passivity_para_inference.png" width="400pt"></td>
+    <td align="center"><img src="l2gain_inference2.png" width="400pt"></td>
+    <td align="center"><img src="inputforward_passivity_para_inference2.png" width="400pt"></td>
   </tr>
 </table>
 
